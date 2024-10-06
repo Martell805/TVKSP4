@@ -6,6 +6,8 @@ services:
       POSTGRES_DB: "tvksp"
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
+    volumes:
+      - ./for_dc/postgres:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
@@ -61,7 +63,7 @@ services:
     image: zabbix/zabbix-server-pgsql:latest
     environment:
       DB_SERVER_HOST: "postgres"
-      POSTGRES_DB: "tvksp"
+      POSTGRES_DB: "monitoring"
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
     ports:
@@ -76,7 +78,7 @@ services:
     environment:
       ZBX_SERVER_HOST: zabbix-server
       DB_SERVER_HOST: "postgres"
-      POSTGRES_DB: "tvksp"
+      POSTGRES_DB: "monitoring"
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
     ports:
@@ -90,7 +92,7 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./for_dc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     networks:
